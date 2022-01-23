@@ -1,0 +1,33 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: charts
+  namespace: charts
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: charts-app
+  template:
+    metadata:
+      labels:
+        app: charts-app
+        name: charts
+    spec:
+      containers:
+      - name: charts-app
+        image: valliappanr/charts:1.15
+        env:
+            - name: REDIS_HOST
+              value: "192.168.1.140"
+            - name: ALLOW_EMPTY_PASSWORD
+              value: "yes"
+            - name: DATA_PATH
+              value: "/data"
+        volumeMounts:
+           - name: html-class-volume
+             mountPath: /data
+      volumes:
+        - name: html-class-volume
+          persistentVolumeClaim:
+            claimName: ssd-nfs-pvc-3

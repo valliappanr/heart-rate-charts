@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+</head>
+<body>
+<H1>
+    Meter Reading
+</H1>
+<div id="chart" style="width:auto; height:300px;"></div>
+</body>
+<script>
+    
+    google.charts.load('visualization', { packages: ['corechart'] });
+    google.charts.setOnLoadCallback(drawLineChart);
+
+    setInterval(drawLineChart, 10000);
+
+    function drawLineChart() {
+        $.ajax({
+            url: "/data_1629478800.json",
+            dataType: "json",
+            type: "GET",
+            contentType: "application/json; charset=utf-8",
+            success: function (data) {
+                var arrSales = [['Time', 'Reading']];    
+
+                
+                $.each(data, function (index, value) {
+                    arrSales.push([value.Time, value.Reading]);
+                });
+
+                
+                var options = {
+                    title: 'Meter Reading',
+                    curveType: 'function',
+                    legend: { position: 'bottom', textStyle: { color: '#555', fontSize: 14} }  
+                };
+
+                
+                var figures = google.visualization.arrayToDataTable(arrSales)
+
+                
+                var chart = new google.visualization.LineChart(document.getElementById('chart'));
+                chart.draw(figures, options);      
+            },
+            error: function (XMLHttpRequest, textStatus, errorThrown) {
+                alert('Got an Error');
+            }
+        });
+    }
+</script>
+</html>

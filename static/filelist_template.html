@@ -1,0 +1,12 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Monitor Reading files</title>
+</head>
+<body>
+<ul>
+    {{range $index, $element := .}}
+        <li><a href="{{$element}}">{{$element}}</a></li>
+    {{end}}
+</ul></body>
+</html>
